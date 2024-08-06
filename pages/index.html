@@ -6,6 +6,38 @@
 
 
     <link href="style.css" rel="stylesheet" />
+    <script>
+        /*const x = {nome: 'abc', idade: 19};
+        console.log(x);     
+       
+        let a = 10;
+        let b = 10;
+
+        let c = a + b;
+
+        console.log(c);
+
+        function somar(a, b) {
+            return a + b;
+        }
+
+        console.log(somar('abc', b));*/
+
+        function salvar() {
+            var nome = document.getElementById('nome').value;
+            var email = document.getElementById('email').value;
+            var data = document.getElementById('data').value;
+            var estado = document.getElementById('estado').value;
+            
+            console.log(nome);
+            console.log(email);
+            console.log(data);
+            console.log(estado);
+
+            return false;
+        }
+    </script>
+
 </head>
 
 <body>
@@ -36,14 +68,14 @@
 
             <div class="mb-3">
                 <label class="form-label">Estado</label>
-                <select class="form-select">
+                <select id="estado" class="form-select">
                     <option>Selecione</option>
                     <option>PR</option>
                     <option>SC</option>
                 </select>
             </div>
 
-            <button class="btn btn-primary">Salvar</button>
+            <button onclick="return salvar();" class="btn btn-primary">Salvar</button>
         </form>
     </div>
 
