@@ -5,14 +5,32 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
 
-    <link href="style.css" rel="stylesheet" />  
+    <link href="style.css" rel="stylesheet" />
+    
+    <script>
+
+        function validarFormulario() {
+            //document.getElementById('nome').value = 'Prof. Cleverson';
+            const nome = document.getElementById('nome').value;
+            if (nome === '') {
+                document.getElementById('nome').style = 'border: 2px solid #ff0000;';
+                alert('hey, you have to fill something buddy.');
+                return false;
+            }
+
+            console.log(nome);
+            console.log("chamou validarFormulario");
+            return true;
+        }
+
+    </script>
 
 </head>
 
 <body>
     <div class="container">
         <h2>Cadastro de Usuário</h2>
-        <form>
+        
             <div class="row">
                 <div class="col-10 mb-3">
                     <label class="form-label">Nome</label>
@@ -44,8 +62,8 @@
                 </select>
             </div>
 
-            <button onclick="return salvar();" class="btn btn-primary">Salvar</button>
-        </form>
+            <button onclick="validarFormulario();" class="btn btn-primary">Salvar</button>
+       
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
