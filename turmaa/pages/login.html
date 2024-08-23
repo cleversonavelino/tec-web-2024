@@ -21,6 +21,16 @@
                 document.getElementById('campoObrigatorio').style.display = 'none';
             }
 
+            console.log("Email: " + email);
+            console.log("Senha: " + senha);
+
+            if (senha.match(/[^A-Z]/g).length != senha.length &&
+            senha.match(/[^A-Za-z 0-9]/g)) {
+            } else {
+                document.getElementById('senhaRegex').style.display = 'block';
+                return;
+            }
+
             if (senha.length < 8 || senha.length > 16) {
                 document.getElementById('tamanhoSenha').style.display = 'block';
                 return;
@@ -28,13 +38,12 @@
                 document.getElementById('tamanhoSenha').style.display = 'none';
             }
 
-            console.log("Email: " + email);
-            console.log("Senha: " + senha);
+
 
             console.log('chamou realizar login');
         }
 
-        function mostrarSenha() {            
+        function mostrarSenha() {
             var campoSenha = document.getElementById('senha');
 
             if (campoSenha.type == 'text') {
@@ -64,8 +73,9 @@
         </form>
         <label id="campoObrigatorio" class="error-label">Os campos são obrigatórios.</label>
         <label id="tamanhoSenha" class="error-label">A senha deve ter entre 8 e 16 caracteres.</label>
-
-        <br/>
+        <label id="senhaRegex" class="error-label">O campo senha precisa ter: 1 caracter especial e 1 letra
+            maiúscula.</label>
+        <br />
         <a href="cadastre-se.html">Cadastre-se</a>
     </div>
 
