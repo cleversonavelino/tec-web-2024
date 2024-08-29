@@ -24,8 +24,8 @@
             console.log("Email: " + email);
             console.log("Senha: " + senha);
 
-            if (senha.match(/[^A-Z]/g).length != senha.length &&
-            senha.match(/[^A-Za-z 0-9]/g)) {
+            if ((/[^A-Z]/g).test(senha) != senha.length &&
+                senha.match(/[^A-Za-z 0-9]/g)) {
             } else {
                 document.getElementById('senhaRegex').style.display = 'block';
                 return;

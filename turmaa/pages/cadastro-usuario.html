@@ -28,7 +28,7 @@
             var email = document.getElementById('email').value;
             var data = document.getElementById('data').value;
             var estado = document.getElementById('estado').value;
-            
+
             console.log(nome);
             console.log(email);
             console.log(data);
@@ -73,6 +73,11 @@
                     <option>PR</option>
                     <option>SC</option>
                 </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Ativo</label>
+                <input type="checkbox">
             </div>
 
             <button onclick="return salvar();" class="btn btn-primary">Salvar</button>
