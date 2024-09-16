@@ -5,21 +5,26 @@ app.use(express.json());
 app.use(express.static('./pages'));
 
 const produtos = [];
+const usuarios = [];
 
 const router = express.Router();
-router.get('/api/produtos', (req, res) => {  
-    console.log('entrou no get');
+router.get('/api/produtos', (req, res) => { 
     res.status(200).json(produtos);
 });
-router.post('/api/produtos', (req, res) => {  
-    console.log('entrou no post');
-    console.log(req.body);
-
+router.get('/api/usuarios', (req, res) => { 
+    res.status(200).json(usuarios);
+});
+router.post('/api/produtos', (req, res) => {     
     var produto = req.body;
     produto.id = 1;
-
-    produtos.push(produto);
+    produtos.push(produto);    
     res.status(201).json(produto);
+});
+router.post('/api/usuarios', (req, res) => {     
+    var usuario = req.body;
+    usuario.id = 1;
+    usuarios.push(usuario);    
+    res.status(201).json(usuario);
 });
 
 app.use(router);
