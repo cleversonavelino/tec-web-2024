@@ -15,6 +15,7 @@
                 }
             });
             const result = await response.json();
+            console.log(result);
 
             const tabelaUsuario = document.getElementById('tabelaUsuario');
             result.forEach((usuario, index) => {                
@@ -26,9 +27,30 @@
 
                 cell1.innerHTML = usuario.id;
                 cell2.innerHTML = usuario.email;
+                cell3.innerHTML = '<button onclick="carregar('+usuario.id+')">Editar</editar>';
+                cell4.innerHTML = '<button onclick="excluir('+usuario.id+')">Excluir</editar>';
             });
         }
         listar();
+
+        const carregar = (id) => {
+            console.log("entrou na função carregar")
+            console.log(id);
+            location.href = 'cadastro-usuario.html?id='+id;
+        }
+
+        const excluir = async (id) => {
+            console.log("chamou o excluir");
+            console.log(id);
+            const response = await fetch(`http://localhost:3000/api/usuarios/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+            const result = await response.body;
+            console.log(result);
+        }
     </script>
 </head>
 
@@ -56,18 +78,7 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- <tr>
-                    <td>1</td>
-                    <td>Pedro</td>
-                    <td><button onclick="location.href='cadastro-usuario.html'" class="btn btn-secondary">Editar</button></td>
-                    <td><button class="btn btn-danger">Excluir</button></td>
-                </tr>                
-                <tr>
-                    <td>2</td>
-                    <td>João</td>
-                    <td><button class="btn btn-secondary">Editar</button></td>
-                    <td><button class="btn btn-danger">Excluir</button></td>
-                </tr>   -->
+                
             </tbody>
         </table>
 

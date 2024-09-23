@@ -7,39 +7,67 @@
     <link href="../css/style.css" rel="stylesheet" />
 
     <script>
+        const carregar = async () => {
+            console.log("chamou o carregar...");            
+            const id = location.search.substring(4,5);
+            if (!id) {
+                return;
+            }
+            const response = await fetch(`http://localhost:3000/api/usuarios/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+            const usuario = await response.json();
+            console.log(usuario);
+
+            document.getElementById('id').value = usuario.id;
+            document.getElementById('email').value = usuario.email;
+            document.getElementById('senha').value = usuario.senha;
+            document.getElementById('status').checked = usuario.status;
+        }
+
         const salvar = async () => {
+            const id = document.getElementById('id').value;
             const email = document.getElementById('email').value;
             const senha = document.getElementById('senha').value;
             const status = document.getElementById('status').checked;
 
             console.log("chamou o salvar");
+            console.log(id);
             console.log(email);
             console.log(senha);
             console.log(status);
 
             const data = {
+                id: id,
                 email: email,
                 senha: senha,
                 status: status
             };
+            console.log(JSON.stringify(data));
             const response = await fetch(`http://localhost:3000/api/usuarios`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(data),
-            });
+            });            
             const result = await response.json();
             console.log(result);
-        }        
+        }   
+        
+        carregar();
     </script>
 </head>
 
 
 <body>
     <div class="container" style="max-width: 50%;">
-        <h2>Cadastro Usuário</h2>
+        <h2>Cadastro Usuário!</h2>
         <form>
+            <input type="hidden" id="id" />
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email">
