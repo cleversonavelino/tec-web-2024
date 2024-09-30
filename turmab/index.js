@@ -7,9 +7,10 @@ app.use(express.static('./pages'));
 
 var mysql = require('mysql');
 var con = mysql.createConnection({
-    host: "35.202.15.50",
+    host: "localhost",
     user: "root",
-    password: "123456"
+    password: "123456", 
+    database: "aula"   
 });
 con.connect(function (err) {
     if (err) throw err;
@@ -31,17 +32,17 @@ router.post('/api/produtos', (req, res) => {
     res.status(201).json(produto);
 });
 
-router.get('/api/usuarios', (req, res) => {
-    con.query("SELECT u.id, u.email, u.status FROM usuario u", function (err, result, fields) {
-        if (err) throw err;
-        console.log(result);
-    });
-    res.status(200).json({});
+router.get('/api/usuarios', async (req, res) => {
+    await con.query("SELECT u.id, u.email, u.status FROM usuario u", function (err, result, fields) {
+        if (err) throw err;        
+        res.status(200).json(result);
+    });       
 });
 router.post('/api/usuarios', (req, res) => {
     var usuario = req.body;
-    var sql = `INSERT INTO usuario (email, senha, status) VALUES ('${usuario.email}', '${usuario.senha}',
-    '${usuario.status}')`;
+    var sql = `INSERT INTO usuario (email, senha, status) VALUES 
+    ('${usuario.email}', '${usuario.senha}',
+    '${usuario.status ? 1 : 0}')`;
     con.query(sql, function (err, result) {
         if (err) throw err;
         console.log(result);
