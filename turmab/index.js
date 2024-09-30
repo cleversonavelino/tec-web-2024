@@ -7,7 +7,7 @@ app.use(express.static('./pages'));
 
 var mysql = require('mysql');
 var con = mysql.createConnection({
-    host: "localhost",
+    host: "10.150.11.80",
     user: "root",
     password: "123456", 
     database: "aula"   
@@ -32,8 +32,9 @@ router.post('/api/produtos', (req, res) => {
     res.status(201).json(produto);
 });
 
-router.get('/api/usuarios', async (req, res) => {
-    await con.query("SELECT u.id, u.email, u.status FROM usuario u", function (err, result, fields) {
+router.get('/api/usuarios', (req, res) => {
+    let sql = "SELECT u.id, u.email, u.status FROM usuario u";
+    con.query(sql, function (err, result) {
         if (err) throw err;        
         res.status(200).json(result);
     });       
@@ -41,11 +42,9 @@ router.get('/api/usuarios', async (req, res) => {
 router.post('/api/usuarios', (req, res) => {
     var usuario = req.body;
     var sql = `INSERT INTO usuario (email, senha, status) VALUES 
-    ('${usuario.email}', '${usuario.senha}',
-    '${usuario.status ? 1 : 0}')`;
+    ('${usuario.email}', '${usuario.senha}','${usuario.status ? 1 : 0}')`;
     con.query(sql, function (err, result) {
-        if (err) throw err;
-        console.log(result);
+        if (err) throw err;        
     });
     res.status(201).json(usuario);
 });
