@@ -8,6 +8,14 @@ const router = express.Router();
 app.use(express.json());
 
 var produtos = [];
+var usuarios = [];
+
+router.post("/api/usuarios", (request, response) => {
+    const usuario = request.body;
+    usuario.id = usuarios.length + 1;
+    usuarios.push(usuario);
+    response.status(201).json(usuario);
+});
 
 router.get("/api/produtos", (request, response) => {    
     response.status(200).json(produtos);

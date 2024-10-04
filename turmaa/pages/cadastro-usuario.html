@@ -23,18 +23,33 @@
 
         console.log(somar('abc', b));*/
 
-        function salvar() {
-            var nome = document.getElementById('nome').value;
-            var email = document.getElementById('email').value;
-            var data = document.getElementById('data').value;
-            var estado = document.getElementById('estado').value;
+        const salvar = async () => {
+            var nomeValue = document.getElementById('nome').value;
+            var emailValue = document.getElementById('email').value;
+            var dataValue = document.getElementById('data').value;
+            var estadoValue = document.getElementById('estado').value;
 
             console.log(nome);
             console.log(email);
             console.log(data);
             console.log(estado);
 
-            return false;
+            var data = {
+                'nome': nomeValue,
+                'email': emailValue,
+                'data': dataValue,
+                'estado': estadoValue 
+            };
+
+            const response = await fetch(`http://localhost:3000/api/usuarios`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });            
+            const result = await response.json();
+            console.log(result);
         }
     </script>
 
@@ -80,7 +95,7 @@
                 <input type="checkbox">
             </div>
 
-            <button onclick="return salvar();" class="btn btn-primary">Salvar</button>
+            <button type="button" onclick="salvar();" class="btn btn-primary">Salvar</button>
         </form>
     </div>
 
