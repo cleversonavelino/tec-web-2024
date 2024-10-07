@@ -4,14 +4,20 @@ app.use(express.json());
 
 app.use(express.static('./pages'));
 
-
+//importante o modulo de mysql
 var mysql = require('mysql');
+
+//criando a variável con que vai ter a referência de conexão
+//com o banco de dados
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "123456", 
     database: "aula"   
 });
+
+//tentando connectar
+//a variável con tem a conexão agora
 con.connect(function (err) {
     if (err) throw err;
     console.log("Connected!");
@@ -34,7 +40,13 @@ router.post('/api/produtos', (req, res) => {
 
 //endpoint para listar todos os usuários
 router.get('/api/usuarios', (req, res) => {
+    //cria a string the consulta no baco do tipo select
     let sql = "SELECT u.id, u.email, u.status FROM usuario u";
+    //executando o comando sql com a função query
+    //nela passamos a string de consulta
+    //após a execução ele retorna o function que vai ter a variável err e result
+    //se deu algum erro a variável err terá o erro obtivo
+    //caso contrário o result terá dos dados do banco 
     con.query(sql, function (err, result) {
         if (err) throw err;        
         res.status(200).json(result);
