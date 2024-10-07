@@ -7,7 +7,7 @@ app.use(express.static('./pages'));
 
 var mysql = require('mysql');
 var con = mysql.createConnection({
-    host: "10.150.11.80",
+    host: "localhost",
     user: "root",
     password: "123456", 
     database: "aula"   
@@ -32,6 +32,7 @@ router.post('/api/produtos', (req, res) => {
     res.status(201).json(produto);
 });
 
+//endpoint para listar todos os usuários
 router.get('/api/usuarios', (req, res) => {
     let sql = "SELECT u.id, u.email, u.status FROM usuario u";
     con.query(sql, function (err, result) {
@@ -39,6 +40,8 @@ router.get('/api/usuarios', (req, res) => {
         res.status(200).json(result);
     });       
 });
+
+//endpoint para salvar um usuário
 router.post('/api/usuarios', (req, res) => {
     var usuario = req.body;
     var sql = `INSERT INTO usuario (email, senha, status) VALUES 
@@ -48,18 +51,26 @@ router.post('/api/usuarios', (req, res) => {
     });
     res.status(201).json(usuario);
 });
+
+//endpoint para capturar um usuário por id
 router.get('/api/usuarios/:id', (req, res) => {
     const id = req.param("id");
-    console.log(id);
-    const resultado = usuarios.filter(u => u.id == id);
-    res.status(200).json(resultado[0]);
+    
+    let sql = `SELECT u.id, u.email, u.status FROM usuario u WHERE u.id = ${id}`;
+    con.query(sql, function (err, result) {
+        if (err) throw err;        
+        res.status(200).json(result[0]);
+    });     
 });
+
+//endpoint para excluir um usuário
 router.delete('/api/usuarios/:id', (req, res) => {
     const id = req.param("id");
-    console.log(id);
-
-    var removeIndex = usuarios.map(item => item.id).indexOf(id);
-    usuarios.splice(removeIndex, 1);
+    
+    var sql = `DELETE FROM usuario WHERE id = ${id} `;
+    con.query(sql, function (err, result) {
+        if (err) throw err;        
+    });
 
     res.status(200).send(`usuario com id ${id} excluído`);
 });
