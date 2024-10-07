@@ -12,8 +12,8 @@ var mysql = require('mysql');
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "123456", 
-    database: "aula"   
+    password: "123456",
+    database: "aula"
 });
 
 //tentando connectar
@@ -48,18 +48,25 @@ router.get('/api/usuarios', (req, res) => {
     //se deu algum erro a variável err terá o erro obtivo
     //caso contrário o result terá dos dados do banco 
     con.query(sql, function (err, result) {
-        if (err) throw err;        
+        if (err) throw err;
         res.status(200).json(result);
-    });       
+    });
 });
 
 //endpoint para salvar um usuário
 router.post('/api/usuarios', (req, res) => {
     var usuario = req.body;
-    var sql = `INSERT INTO usuario (email, senha, status) VALUES 
+    var sql = '';
+    if (usuario.id) {
+        sql = `UPDATE usuario SET email = '${usuario.email}', 
+        senha = '${usuario.senha}', status = '${usuario.status ? 1 : 0}' 
+        WHERE id = ${usuario.id}`; 
+    } else {
+        sql = `INSERT INTO usuario (email, senha, status) VALUES 
     ('${usuario.email}', '${usuario.senha}','${usuario.status ? 1 : 0}')`;
+    }
     con.query(sql, function (err, result) {
-        if (err) throw err;        
+        if (err) throw err;
     });
     res.status(201).json(usuario);
 });
@@ -67,21 +74,21 @@ router.post('/api/usuarios', (req, res) => {
 //endpoint para capturar um usuário por id
 router.get('/api/usuarios/:id', (req, res) => {
     const id = req.param("id");
-    
+
     let sql = `SELECT u.id, u.email, u.status FROM usuario u WHERE u.id = ${id}`;
     con.query(sql, function (err, result) {
-        if (err) throw err;        
+        if (err) throw err;
         res.status(200).json(result[0]);
-    });     
+    });
 });
 
 //endpoint para excluir um usuário
 router.delete('/api/usuarios/:id', (req, res) => {
     const id = req.param("id");
-    
+
     var sql = `DELETE FROM usuario WHERE id = ${id} `;
     con.query(sql, function (err, result) {
-        if (err) throw err;        
+        if (err) throw err;
     });
 
     res.status(200).send(`usuario com id ${id} excluído`);
