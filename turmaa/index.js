@@ -7,17 +7,48 @@ const port = 3000;
 const router = express.Router();
 app.use(express.json());
 
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+    host: "127.0.0.1",
+    user: "root",
+    password: "123456",
+    database: "aula"
+});
+
+con.connect((err) => {
+    if (err) throw err;
+    console.log("Connected!");
+});
+
 var produtos = [];
-var usuarios = [];
+
 
 router.post("/api/usuarios", (request, response) => {
     const usuario = request.body;
-    usuario.id = usuarios.length + 1;
-    usuarios.push(usuario);
+
+    var sql = `INSERT INTO usuario (nome, email, data, estado) 
+    values
+    ('${usuario.nome}',
+    '${usuario.email}',
+    '${usuario.data}',
+    '${usuario.estado}')`;
+
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+    });
+
     response.status(201).json(usuario);
 });
+router.get("/api/usuarios", (request, response) => {
+    var sql = 'SELECT id, nome, email, estado FROM usuario';
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        response.status(200).json(result);
+    });    
+});
 
-router.get("/api/produtos", (request, response) => {    
+router.get("/api/produtos", (request, response) => {
     response.status(200).json(produtos);
 });
 
@@ -31,7 +62,7 @@ router.post("/api/produtos", (request, response) => {
 router.delete("/api/produtos/:id", (request, response) => {
     const id = request.params.id;
     console.log(produtos);
-    produtos = produtos.filter(p => p.id != id);    
+    produtos = produtos.filter(p => p.id != id);
     response.status(204).send("produtos excluído com sucesso");
 });
 
