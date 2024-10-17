@@ -10,7 +10,7 @@
 
     <link href="style.css" rel="stylesheet" />
     <script>
-        function realizarLogin() {
+       const realizarLogin = async () => {
             const email = document.getElementById('email').value;
             const senha = document.getElementById('senha').value;
 
@@ -38,9 +38,31 @@
                 document.getElementById('tamanhoSenha').style.display = 'none';
             }
 
-
-
             console.log('chamou realizar login');
+            var data = {                
+                'email': email,
+                'senha': senha
+            };
+            const response = await fetch(`http://localhost:3000/api/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });            
+            const result = await response.json();
+            console.log(result);
+            if (result.length) {
+                console.log("achou o usuário");
+                const usuario = result[0];
+                localStorage.setItem('id', usuario.id);
+                localStorage.setItem('email', usuario.email);
+                location.href = 'index.html';
+            } else {
+                console.log("não achou o usuário");
+                localStorage.clear();
+                document.getElementById('loginInvalido').style.display = 'block';
+            }
         }
 
         function mostrarSenha() {
@@ -75,6 +97,7 @@
         <label id="tamanhoSenha" class="error-label">A senha deve ter entre 8 e 16 caracteres.</label>
         <label id="senhaRegex" class="error-label">O campo senha precisa ter: 1 caracter especial e 1 letra
             maiúscula.</label>
+        <label id="loginInvalido" class="error-label">O login falhou. Tente novamente.</label>
         <br />
         <a href="cadastre-se.html">Cadastre-se</a>
     </div>

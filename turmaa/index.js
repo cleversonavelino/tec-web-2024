@@ -23,6 +23,20 @@ con.connect((err) => {
 
 var produtos = [];
 
+router.post("/api/login", (request, response) => {
+    const usuario = request.body;
+    const email = usuario.email;
+    const senha = usuario.senha;
+
+    const sql = `select id, email from usuario where email = '${email}' and senha = '${senha}'`;
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        //TODO caso não ache o usuário deve ser 401
+        console.log(result);
+        response.status(200).json(result);
+    }); 
+});
+
 
 router.post("/api/usuarios", (request, response) => {
     const usuario = request.body;

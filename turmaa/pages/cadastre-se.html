@@ -10,6 +10,12 @@
 
     <link href="style.css" rel="stylesheet" />
     <script>
+        var email = localStorage.getItem('email');
+        if (!email) {
+            alert("Você precisa se autenticar");
+            location.href = 'login.html';
+        }
+
         function cadastrar() {
             const email = document.getElementById('email').value;
             const senha = document.getElementById('senha').value;
