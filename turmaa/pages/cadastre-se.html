@@ -10,34 +10,34 @@
 
     <link href="style.css" rel="stylesheet" />
     <script>
-        var email = localStorage.getItem('email');
-        if (!email) {
-            alert("Você precisa se autenticar");
-            location.href = 'login.html';
-        }
+        //var email = localStorage.getItem('email');
+        //if (!email) {
+        //    alert("Você precisa se autenticar");
+        //    location.href = 'login.html';
+        //}
 
-        function cadastrar() {
-            const email = document.getElementById('email').value;
-            const senha = document.getElementById('senha').value;
+        const salvar = async () => {   
+            var email = document.getElementById('email')?.value;
+            var senha = document.getElementById('senha').value;
+            var confirmarsenha = document.getElementById('confirmarsenha').value;
 
-            if (!email || !senha) {
-                document.getElementById('campoObrigatorio').style.display = 'block';
-                return;
-            } else {
-                document.getElementById('campoObrigatorio').style.display = 'none';
+            console.log(email);
+            console.log(senha);
+            console.log(confirmarsenha);
+
+            var data = {
+                email: email,
+                senha: senha
             }
-
-            if (senha.length < 8 || senha.length > 16) {
-                document.getElementById('tamanhoSenha').style.display = 'block';
-                return;
-            } else {
-                document.getElementById('tamanhoSenha').style.display = 'none';
-            }
-
-            console.log("Email: " + email);
-            console.log("Senha: " + senha);
-
-            console.log('chamou realizar login');
+            
+            const response = await fetch(`http://localhost:3000/api/cadastrese`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });            
+            const result = await response.json();
         }
 
         function mostrarSenha() {            
@@ -67,13 +67,11 @@
             </div>
             <div class="mb-3">
                 <label for="senha" class="form-label">Confirmar a Senha</label>
-                <input type="password" class="form-control" id="senha">
+                <input type="password" class="form-control" id="confirmarsenha">
             </div>
-            <button onclick="cadastrar()" type="button" class="btn btn-primary">Salvar</button>
+            <button onclick="salvar()" type="button" class="btn btn-primary">Salvar</button>
             <input onclick="mostrarSenha()" type="checkbox"> Mostrar senha
         </form>
-        <label id="campoObrigatorio" class="error-label">Os campos são obrigatórios.</label>
-        <label id="tamanhoSenha" class="error-label">A senha deve ter entre 8 e 16 caracteres.</label>
         
         <br/>
         

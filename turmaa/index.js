@@ -16,10 +16,10 @@ var con = mysql.createConnection({
     database: "aula"
 });
 
-con.connect((err) => {
-    if (err) throw err;
-    console.log("Connected!");
-});
+//con.connect((err) => {
+///    if (err) throw err;
+//    console.log("Connected!");
+//});
 
 var produtos = [];
 
@@ -35,6 +35,14 @@ router.post("/api/login", (request, response) => {
         console.log(result);
         response.status(200).json(result);
     }); 
+});
+
+router.post("/api/cadastrese", (request, response) => {
+
+    //cria o registro no banco de dados (como inativo)
+    //criar uma coluna de codigo de verificacao
+    //mandamos o codigo de verificacao via email
+
 });
 
 
