@@ -19,7 +19,7 @@ var con = mysql.createConnection({
 //tentando connectar
 //a variável con tem a conexão agora
 con.connect(function (err) {
-    if (err) throw err;
+    //if (err) throw err;
     console.log("Connected!");
 });
 
@@ -36,6 +36,19 @@ router.post('/api/produtos', (req, res) => {
     produto.id = 1;
     produtos.push(produto);
     res.status(201).json(produto);
+});
+
+//endpoint para o login
+router.post('/api/login', (req, res) => {
+    var usuario = req.body;
+    var sql = `select id, email from usuario where email = '${usuario.email}' and
+    senha = '${usuario.senha}' `;
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        res.status(200).json(result);
+    });
+
+
 });
 
 //endpoint para listar todos os usuários

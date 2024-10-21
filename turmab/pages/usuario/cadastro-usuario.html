@@ -7,6 +7,12 @@
     <link href="../css/style.css" rel="stylesheet" />
 
     <script>
+        var id = localStorage.getItem('id');
+        if (!id) {
+            alert('Você precisa se autenticar na aplicação!');
+            location.href = 'login.html';
+        }
+
         const carregar = async () => {
             console.log("chamou o carregar...");            
             const id = location.search.substring(4,5);

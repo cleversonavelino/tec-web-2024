@@ -7,7 +7,7 @@
     <link href="css/style.css" rel="stylesheet" />
 
     <script>
-        function validarLogin() {
+        const login = async () => {
             console.log('chamou validarLogin');
 
             const email = document.getElementById('email').value;
@@ -30,10 +30,36 @@
 
             console.log('email: ' + email);
             console.log('senha: ' + senha);
+
+            const data = {                
+                email: email,
+                senha: senha
+            };
+            console.log(JSON.stringify(data));
+            const response = await fetch(`http://localhost:3000/api/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });            
+            const result = await response.json();
+            console.log(result);
+
+            var id = result.id;
+            
+            if (id) {
+                localStorage.setItem('id', id);
+                localStorage.setItem('email', email);
+            } else {
+                localStorage.clear;
+                alert('O login não foi realizado com sucesso!');
+            }
+            
         }
 
         function validarPadraoSenha(event) {
-            console.log(event.target.value);
+            //console.log(event.target.value);
             const value = event.target.value;
 
             document.getElementById('senhaPadrao').style.display = 'none';
@@ -65,7 +91,7 @@
                 <label for="senha" class="form-label">Senha</label>
                 <input onkeyup="validarPadraoSenha(event)" type="password" class="form-control" id="senha">
             </div>
-            <button onclick="validarLogin()" type="button" class="btn btn-primary">Login</button>
+            <button onclick="login()" type="button" class="btn btn-primary">Login</button>
 
             <label id="campoObrigatorio" class="labelValidacao">Os campos são obrigatórios.</label>
             <label id="senhaTamanho" class="labelValidacao">A senha deve ter de 8 a 16 caracteres.</label>
