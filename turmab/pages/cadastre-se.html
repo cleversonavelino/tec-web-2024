@@ -7,30 +7,32 @@
     <link href="css/style.css" rel="stylesheet" />
 
     <script>
-        function validarLogin() {
-            console.log('chamou validarLogin');
+        const salvar = async () => {
+            console.log('salvar...');
 
-            const email = document.getElementById('email').value;
-            const senha = document.getElementById('senha').value;
-            const confirmesenha = document.getElementById('confirmesenha').value;
+            var email = document.getElementById('email').value;
+            var senha = document.getElementById('senha').value;
+            var confirmesenha = document.getElementById('confirmesenha').value;
 
-            document.getElementById('campoObrigatorio').style.display = 'none';
-            document.getElementById('senhaTamanho').style.display = 'none';
-
-            if (!email || !senha || !confirmesenha) {
-                console.log("campos vazios");
-                document.getElementById('campoObrigatorio').style.display = 'block';
-                return;
+            if (senha !== confirmesenha) {
+                //mensagem de erro
             }
 
-            if (senha && (senha.length < 8 || senha.length > 16)) {
-                console.log("tamanho senha inválido");
-                document.getElementById('senhaTamanho').style.display = 'block';
-                return;
-            }
+            const data = {                
+                email: email,
+                senha: senha
+            };
+            console.log(JSON.stringify(data));
+            const response = await fetch(`http://localhost:3000/api/registrese`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });            
+            const result = await response.json();
 
-            console.log('email: ' + email);
-            console.log('senha: ' + senha);
+            
         }
     </script>
 </head>
@@ -52,11 +54,8 @@
                 <label for="confirmesenha" class="form-label">Confirme a Senha</label>
                 <input type="password" class="form-control" id="confirmesenha">
             </div>
-            <button onclick="validarLogin()" type="button" class="btn btn-primary">Salvar</button>
-            <label id="campoObrigatorio" class="labelValidacao">Os campos são obrigatórios.</label>
-            <label id="senhaTamanho" class="labelValidacao">A senha deve ter de 8 a 16 caracteres.</label>
-            <label id="senhaPadrao" class="labelValidacao">A senha deve ter: 1 letra maíscula e 1 caractere
-                especial.</label>
+            <button onclick="salvar()" type="button" class="btn btn-primary">Salvar</button>
+            
         </form>
         
 

@@ -42,13 +42,24 @@ router.post('/api/produtos', (req, res) => {
 router.post('/api/login', (req, res) => {
     var usuario = req.body;
     var sql = `select id, email from usuario where email = '${usuario.email}' and
-    senha = '${usuario.senha}' `;
+    senha = '${usuario.senha}' and status = 1 `;
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        res.status(200).json(result);
+    });
+});
+
+//endpoint para se registrar
+router.post('/api/registrese', (req, res) => {
+    var usuario = req.body;
+    var sql = `insert into usuario (email,codigo,status) values ('${usuario.email}',
+    '3543',0) `;
     con.query(sql, function (err, result) {
         if (err) throw err;
         res.status(200).json(result);
     });
 
-
+    //enviar o código por email
 });
 
 //endpoint para listar todos os usuários
